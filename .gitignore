@@ -3,3 +3,6 @@
 ################################################################################
 
 /BreakingGrid.API/BreakingGrid.API/bin/Debug/netcoreapp3.1
+/BreakingGrid.API/BreakingGrid.API/obj
+/.vs
+/BreakingGrid.API/.vs/BreakingGrid.API
