@@ -17,15 +17,28 @@ namespace BreakingGrid.API
 
         public IConfiguration Configuration { get; }
 
-        // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddControllers();
             services.AddScoped<IEmojiDetector, EmojiDetector>();
             services.AddScoped<IRecommendationService, RecommendationService>();
+
+            services.AddSwaggerDocument(config =>
+            {
+                config.PostProcess = document =>
+                {
+                    document.Info.Version = "v1";
+                    document.Info.Title = "Breaking Grid API";
+                    document.Info.Description = "A simple API that helps you to detect emotions on images, and get filter recommendations";
+                    document.Info.Contact = new NSwag.OpenApiContact
+                    {
+                        Name = "Breaking Grid",
+                        Email = string.Empty
+                    };
+                };
+            });
         }
 
-        // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
         {
             if (env.IsDevelopment())
@@ -38,6 +51,9 @@ namespace BreakingGrid.API
             app.UseRouting();
 
             app.UseAuthorization();
+
+            app.UseOpenApi();
+            app.UseSwaggerUi3();
 
             app.UseEndpoints(endpoints =>
             {
