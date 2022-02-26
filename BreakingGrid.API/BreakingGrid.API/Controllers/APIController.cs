@@ -12,11 +12,13 @@ namespace BreakingGrid.API.Controllers
     {
         private readonly ILogger<APIController> _logger;
         private readonly IEmojiDetector _emojiDetector;
+        private readonly IRecommendationService _emotionToEffectsConverter;
 
-        public APIController(ILogger<APIController> logger, IEmojiDetector emojiDetector)
+        public APIController(ILogger<APIController> logger, IEmojiDetector emojiDetector, IRecommendationService emotionToEffectsConverter)
         {
             _logger = logger;
             _emojiDetector = emojiDetector;
+            _emotionToEffectsConverter = emotionToEffectsConverter;
         }
          
         [HttpPost]
@@ -27,7 +29,14 @@ namespace BreakingGrid.API.Controllers
             if (emotions == null)
                 return string.Empty;
 
-            return JsonConvert.SerializeObject(emotions);
+            var topEmoji = _emotionToEffectsConverter.GetTop(emotions);
+
+            if (topEmoji == null)
+                return string.Empty;
+
+            var effects = _emotionToEffectsConverter.GetEffects(topEmoji.Type);
+
+            return JsonConvert.SerializeObject(effects);
         }
     }
 }

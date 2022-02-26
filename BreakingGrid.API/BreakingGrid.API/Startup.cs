@@ -22,6 +22,7 @@ namespace BreakingGrid.API
         {
             services.AddControllers();
             services.AddScoped<IEmojiDetector, EmojiDetector>();
+            services.AddScoped<IRecommendationService, RecommendationService>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
