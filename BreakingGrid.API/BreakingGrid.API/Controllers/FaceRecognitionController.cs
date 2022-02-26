@@ -8,21 +8,32 @@ namespace BreakingGrid.API.Controllers
 {
     [ApiController]
     [Route("[controller]")]
-    public class APIController : ControllerBase
+    public class FaceRecognitionController : ControllerBase
     {
-        private readonly ILogger<APIController> _logger;
+        private readonly ILogger<FaceRecognitionController> _logger;
         private readonly IEmojiDetector _emojiDetector;
         private readonly IRecommendationService _emotionToEffectsConverter;
 
-        public APIController(ILogger<APIController> logger, IEmojiDetector emojiDetector, IRecommendationService emotionToEffectsConverter)
+        public FaceRecognitionController(ILogger<FaceRecognitionController> logger, IEmojiDetector emojiDetector, IRecommendationService emotionToEffectsConverter)
         {
             _logger = logger;
             _emojiDetector = emojiDetector;
             _emotionToEffectsConverter = emotionToEffectsConverter;
         }
-         
-        [HttpPost]
-        public async Task<string> Post(string url)
+
+        [HttpPost("emotions")]
+        public async Task<string> Post_Emotions(string url)
+        {
+            var emotions = await _emojiDetector.GetEmotions(url);
+
+            if (emotions == null)
+                return string.Empty;
+
+            return JsonConvert.SerializeObject(emotions);
+        }
+
+        [HttpPost("effects")]
+        public async Task<string> Post_Effects(string url)
         {
             var emotions = await _emojiDetector.GetEmotions(url);
 
