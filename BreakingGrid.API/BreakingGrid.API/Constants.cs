@@ -8,6 +8,9 @@ namespace BreakingGrid.API
         public static readonly IList<string> POTENTIAL_EMOJI_ICON_LIST = new ReadOnlyCollection<string>
             (new List<string> { "😐", "😄", "😮", "😭", "😠", "🤢", "😨", "🙄" });
 
+        /// <summary>
+        /// The data that we've collected from our users edits and processed using microsofts face API
+        /// </summary>
         public static readonly IDictionary<int, IList<string>> EFFECTS = new Dictionary<int, IList<string>>
         {
             { 1, new List<string>
